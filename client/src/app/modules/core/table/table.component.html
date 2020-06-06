@@ -1,0 +1,24 @@
+<div class="text-right mb-20">
+  <a [routerLink]="['/admin/' + tabledata.modulename+ '/'+tabledata.createbtnurl]" class="btn btn-success pull-right"><i
+      class="fa fa-plus"></i>
+    {{tabledata.createbtntitle}}</a>
+
+  <div class="clearfix"></div>
+</div>
+<div class="panel panel-primary">
+
+  <div class="panel-heading">{{tabledata.tabletitle}}</div>
+  <div class="panel-body">
+    <table class="table" id="mytableid">
+      <thead>
+        <tr>
+          <th *ngFor="let column of tabledata.columns">{{column.lable}}</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- (change)='myfunction($event)' -->

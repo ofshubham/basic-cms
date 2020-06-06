@@ -1,0 +1,357 @@
+<div class="row">
+  <form [formGroup]="mform" autocomplete="off">
+    <div class="col-md-8">
+      <div class="box box-primary">
+        <div class="box-body">
+          <div *ngFor="let f of form">
+            <div [ngSwitch]="f.type">
+
+              <div class="form-group" *ngSwitchCase="'text'">
+                <label for="{{f.name}}" class="{{f.label.class}}">{{f.label.name}}</label>
+                <input type="text" [formControlName]="f.name" class="form-control" id="{{f.name}}"
+                  placeholder="Enter {{f.label.name}}">
+                <div
+                  *ngIf="mform.controls[f.name].invalid && (mform.controls[f.name].dirty || mform.controls[f.name].touched)"
+                  class="alert alert-danger">
+                  <div *ngIf="mform.controls[f.name].errors.required">
+                    {{f.label.name}} field is required.
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group" *ngSwitchCase="'date'">
+                <label for="{{f.name}}" class="{{f.label.class}}">{{f.label.name}}</label>
+                <input type="text" [formControlName]="f.name" readonly class="form-control datetimepicker"
+                  id="{{f.name}}" placeholder="Enter {{f.label.name}}">
+              </div>
+              <div class="form-group" *ngSwitchCase="'select'">
+                <label for="{{f.name}}" class="{{f.label.class}}">{{f.label.name}}</label>
+                <select [formControlName]="f.name" class="form-control {{!f.is_normal?'select2':''}}"
+                  style="width: 100%;" id="{{f.name}}">
+                  <option value="" disabled selected hidden>Please Choose...</option>
+                  <option *ngFor="let c of f.chooise" value="{{c.value}}">{{c.lable}}</option>
+                </select>
+                <div
+                  *ngIf="mform.controls[f.name].invalid && (mform.controls[f.name].dirty || mform.controls[f.name].touched)"
+                  class="alert alert-danger">
+                  <div *ngIf="mform.controls[f.name].errors.required">
+                    {{f.label.name}} field is required.
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group" *ngSwitchCase="'selectmul'">
+                <label for="{{f.name}}" class="{{f.label.class}}">{{f.label.name}}</label>
+                <select [formControlName]="f.name" [multiple]="f.multiple"
+                  class="form-control {{!f.is_normal?'select2':''}}" style="width: 100%;" id="{{f.name}}">
+                  <option value="" disabled selected hidden>Please Choose...</option>
+                  <option *ngFor="let c of f.chooise" value="{{c.value}}">{{c.lable}}</option>
+                </select>
+                <div
+                  *ngIf="mform.controls[f.name].invalid && (mform.controls[f.name].dirty || mform.controls[f.name].touched)"
+                  class="alert alert-danger">
+                  <div *ngIf="mform.controls[f.name].errors.required">
+                    {{f.label.name}} field is required.
+                  </div>
+                </div>
+              </div>
+
+              <!-- <div class="form-group" *ngSwitchCase="'button'">
+                <label for="{{f.name}}" class="{{f.label.class}}">{{f.label.name}}</label>
+                <button class="btn btn-primary xyz"> {{f.label.name}}
+                  <app-mediapopup [fieldname]="f.name" [list]="false" [srcimage]=""
+                    (sendImage)="imagereceiveevent($event)">
+                  </app-mediapopup>
+                </button>
+              </div> -->
+
+              <div class="form-group" *ngSwitchCase="'editor'">
+                <label for="{{f.name}}" class="{{f.label.class}}">{{f.label.name}}</label>
+                <ck-editor [formControlName]="f.name" skin="moono-lisa" language="en" [fullPage]="true"
+                  [config]="cksditorconfig"></ck-editor>
+              </div>
+
+              <div class="form-group" *ngSwitchCase="'textarea'">
+                <label for="{{f.name}}" class="{{f.label.class}}">{{f.label.name}}</label>
+                <textarea [formControlName]="f.name" class="form-control"></textarea>
+              </div>
+
+              <div class="form-group" *ngSwitchCase="'autocomplete'">
+                <label for="{{f.name}}" class="{{f.label.class}}">{{f.label.name}}</label>
+                <input [formControlName]="f.name" class="form-control {{f.multi?'autocompletemulti':'autocomplete'}}"
+                  data-type="{{f.datamodel}}">
+              </div>
+
+              <div class="form-group" *ngSwitchCase="'gallery'">
+                <label for="{{f.name}}" class="{{f.label.class}}">{{f.label.name}}</label>
+                <div class="center">
+                  <ngx-file-drop dropZoneLabel="Drop Gallery Images here" (onFileDrop)="dropped($event)"
+                    (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)" [showBrowseBtn]="false"
+                    multiple="true">
+                    <ng-template let-openFileSelector="openFileSelector">
+                      Optional custom content that replaces the the entire default content.
+                      <button type="button" (click)="openFileSelector()">Browse Files</button>
+                    </ng-template>
+                  </ngx-file-drop>
+                  <div class="upload-table">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>Name</th>
+                          <th>Size</th>
+                          <th>Image</th>
+                        </tr>
+                      </thead>
+                      <tbody class="upload-name-style">
+                        <tr *ngFor="let item of mfiles; let i=index">
+                          <td><strong>{{ item.name }}</strong></td>
+                          <td><strong>{{ item.size }}</strong></td>
+                          <td><img [src]="item.url" width="50px" height="50px;"></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <!-- <div class="form-group">
+                    <div class="buttons pull-right">
+                      <button class="btn btn-primary mr-5" id="openfilemanager">Select Images</button>
+                      <button class="btn btn-warning">Reset</button>
+                    </div>
+                  </div> -->
+              </div>
+
+              <div class="form-group" *ngSwitchCase="'onoff'">
+                <label for="{{f.name}}" class="{{f.label.class}}">{{f.label.name}}</label>
+                <input [formControlName]="f.name" class="myonoff" [checked]="f.defaultcheck" data-on="Yes" data-off="No"
+                  data-offstyle="danger" data-onstyle="success" type="checkbox">
+              </div>
+
+              <div class="form-group" *ngSwitchCase="'radio'">
+                <label for="{{f.name}}" class="{{f.label.class}}">
+                  <input [formControlName]="f.name" class="flat-red" [checked]="f.defaultcheck" type="radio">
+                  {{f.label.name}}
+                </label>
+              </div>
+
+              <div class="form-group" *ngSwitchCase="'radiogroup'">
+                <label for="{{f.name}}" class="{{f.label.class}}">{{f.label.name}}</label>
+                <label class="radio" *ngFor="let r of f.group">
+                  {{r.lable}}
+                  <input [formControlName]="f.name" [value]="r.value" [checked]="f.defaultcheck==r.value" type="radio">
+                  <span class="checkround"></span>
+                </label>
+              </div>
+
+              <div class="form-group" *ngSwitchCase="'checkbox'">
+                <label for="{{f.name}}" class="{{f.label.class}}">
+                  <input [formControlName]="f.name" class="flat-red" [checked]="f.defaultcheck" type="checkbox">
+                  {{f.label.name}}
+                </label>
+              </div>
+
+              <div class="form-group" *ngSwitchCase="'ngselect'">
+                <label for="{{f.name}}" class="{{f.label.class}}" id="test">{{f.label.name}}</label>
+                <ng-select2 [data]="f.chooise" placeholder="Please select" id="{{f.name}}" formControlName="{{f.name}}"
+                  width="calc(100%)" [options]="options"></ng-select2>
+              </div>
+
+              <div class="form-group" *ngSwitchCase="'selectmulti'">
+                <label for="{{f.name}}" class="{{f.label.class}}" id="test">{{f.label.name}}</label>
+                <!-- <select [formControlName]="f.name" class="form-control" multiple style="width: 100%;"
+                  id="{{f.name}}" > -->
+                <select [formControlName]="f.name" class="form-control" multiple="multiple" style="width: 100%;"
+                  id="{{f.name}}">
+                  <option *ngFor="let c of f.chooise" value="{{c.value}}">{{c.label}}</option>
+                </select>
+              </div>
+
+              <div class="form-group" *ngSwitchCase="'checkboxgroup'">
+                <label for="{{f.name}}" class="{{f.label.class}}">{{f.label.name}}</label>
+                <label class="check" *ngFor="let r of f.group">
+                  <input [formControlName]="f.name" [value]="r.value" class="flat-red" type="checkbox">
+                  <!-- [checked]="f.defaultcheck==r.value"   -->
+                  {{r.lable}}
+                </label>
+              </div>
+
+              <div class="form-group" *ngSwitchCase="'memberlist'">
+                <label for="{{f.name}}" class="{{f.label.class}}">{{f.label.name}}</label>
+                <table class="table" width="100%">
+                  <thead>
+                    <tr>
+                      <!-- <th>Image</th> -->
+                      <th>Name</th>
+                      <th>Designation</th>
+                      <th><button class="btn btn-primary" (click)="addMoreslideForMemberList()"><i
+                            class="fas fa-plus"></i> Add More
+                          Slide</button></th>
+                    </tr>
+                  </thead>
+                  <tbody [formArrayName]="peopleCommittee">
+                    <tr *ngFor="let item of peoplelist.controls; let pointIndex=index" [formGroupName]="pointIndex">
+                      <td><input type="text" class="form-control" formControlName="name"></td>
+                      <td><input type="text" class="form-control" formControlName="designation"></td>
+                      <td><button class="btn btn-danger" (click)="removeSlidForMemberList(pointIndex)"><i
+                            class="fas fa-minus"></i></button></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="form-group" *ngSwitchCase="'medialist'">
+                <label for="{{f.name}}" class="{{f.label.class}}">{{f.label.name}}</label>
+                <table class="table" width="100%">
+                  <thead>
+                    <tr>
+                      <th>Image</th>
+                      <th>Caption</th>
+                      <th>Title</th>
+                      <th><button class="btn btn-primary" (click)="addMoreslide()"><i class="fas fa-plus"></i> Add More
+                          Slide</button></th>
+                    </tr>
+                  </thead>
+                  <tbody [formArrayName]="filegalleryname">
+                    <tr *ngFor="let item of gallerylist.controls; let pointIndex=index" [formGroupName]="pointIndex">
+                      <td>
+                        <!-- <div class="form-group mediaimage">
+                          <app-mediapopup fieldname="image" [listindex]="pointIndex" [list]="true"
+                            [srcimage]="getGimage(pointIndex)" (sendImage)="imagereceiveevent($event)"></app-mediapopup>
+                        </div> -->
+                      </td>
+                      <td><input type="text" class="form-control" formControlName="caption"></td>
+                      <td><input type="text" class="form-control" formControlName="title"></td>
+                      <td><button class="btn btn-danger" (click)="removeSlid(pointIndex)"><i
+                            class="fas fa-minus"></i></button></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- --------------------------------- -->
+
+      <div class="col-md-12">
+        <div *ngIf="form['corrigendum']">
+          <div class="box box-primary">
+            <div *ngFor="let f of form['corrigendum']">
+              <div [ngSwitch]="f.type">
+                <div class="box-body">
+
+                  <div class="form-group" *ngSwitchCase="'ctable'">
+                    <label for="{{f.name}}" class="{{f.label.class}}">{{f.label.name}}</label>
+                    <table class="table" width="100%">
+                      <thead>
+                        <tr>
+                          <th>
+                            <h5>CORRIGENDUM TITLE</h5>
+                          </th>
+                          <th>
+                            <h5>CORRIGENDUM FILE/URL</h5>
+                          </th>
+                          <th>
+                            <h5>ACTIONS</h5>
+                          </th>
+                          <th><button class="btn btn-primary" (click)="addMoreFields()"><i class="fas fa-plus"></i> Add
+                              More </button></th>
+                        </tr>
+                      </thead>
+                      <!-- <tbody [formArrayName]="filename">
+                      <tr *ngFor="let item of cor; let pointIndex=index" [formGroupName]="pointIndex">
+                        <td>
+                            <button type="button" class="btn btn-primary" [value]="item.image" formControlName="image">
+                          <app-mediapopup fieldname="image" [listindex]="pointIndex" [list]="true" [srcimage]="getGimage(pointIndex)" (sendImage)="imagereceiveevent($event)"></app-mediapopup>
+                       </button>
+                        </td>
+                        <td><input type="text" class="form-control" [value]="item.title" formControlName="title"></td>
+                        <td><input type="text" class="form-control" [value]="item.url" formControlName="url"></td>
+                        <td><button class="btn btn-danger" (click)="removeFile(pointIndex)"><i class="fas fa-minus"></i></button></td>
+                      </tr>
+                    </tbody> -->
+                    </table>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- --------------------------------- -->
+
+
+
+    <div class="col-md-4">
+      <div class="box box-primary">
+        <div class="box-footer">
+
+          <input type="submit" (click)="save_new()" class="btn btn-primary mr-5" value="Save">
+
+          <div *ngIf="form['fbreak']">
+            <div *ngFor="let f of form['fbreak']">
+              <div [ngSwitch]="f.type">
+
+                <!-- <div class="form-group" *ngSwitchCase="'siteid'">
+                    <label for="{{f.name}}" class="required">Choose Site Name</label>
+                    <select [formControlName]="f.siteid" class="form-control" style="width: 100%;" id="{{f.siteid}}">
+                      <option value="">-- Select Site -- </option>
+                      <option *ngFor="let s of f.chooise " value="{{s.name}}">{{s.name}}</option>
+                    </select> -->
+
+                <!-- </div> -->
+                <div class="form-group" *ngSwitchCase="'text'">
+                  <label for="{{f.name}}" class="{{f.label.class}}">{{f.label.name}}</label>
+                  <input type="text" [formControlName]="f.name" class="form-control" id="{{f.name}}"
+                    placeholder="Enter {{f.label}}">
+                </div>
+
+                <div class="form-group" *ngSwitchCase="'date'">
+                  <label for="{{f.name}}" class="{{f.label.class}}">{{f.label.name}}</label>
+                  <input type="text" [formControlName]="f.name" readonly class="form-control datetimepicker"
+                    id="{{f.name}}" placeholder="Enter {{f.label}}" (change)="datechange($event,f.name)">
+                </div>
+                <div class="form-group" *ngSwitchCase="'select'">
+                  <label for="{{f.name}}" class="{{f.label.class}}">{{f.label.name}}</label>
+                  <select [formControlName]="f.name" class="form-control {{!f.is_normal?'select2':''}}"
+                    style="width: 100%;" id="{{f.name}}">
+                    <option value="" disabled selected hidden>Please Choose...</option>
+                    <!-- <option value="">select none</option> -->
+                    <option *ngFor="let c of f.chooise" value="{{c.value}}">{{c.lable}}</option>
+                  </select>
+                </div>
+
+
+
+                <div class="form-group" *ngSwitchCase="'editor'">
+                  <label for="{{f.name}}" class="{{f.label.class}}">{{f.label.name}}</label>
+
+                  <ck-editor [formControlName]="f.name" skin="moono-lisa" language="en" [fullPage]="true"></ck-editor>
+                </div>
+                <!-- <div class="form-group" *ngSwitchCase="'mediaimage'">
+                  <label for="{{f.name}}" class="{{f.label.class}}">{{f.label.name}}</label>
+                  <input type="text" [formControlName]="f.name" style="display:none;" class="form-control"
+                    id="{{f.name}}" placeholder="Enter {{f.label.name}}">
+                  <div class="form-group mediaimage">
+                    <app-mediapopup [fieldname]="f.name" listindex="0" [list]="false" [srcimage]="getImage(f.name)"
+                      (sendImage)="imagereceiveevent($event)"></app-mediapopup>
+                  </div>
+                </div> -->
+                <div class="form-group" *ngSwitchCase="'autocomplete'">
+                  <label for="{{f.name}}" class="{{f.label.class}}">{{f.label.name}}</label>
+                  <input [formControlName]="f.name" class="form-control {{f.multi?'autocompletemulti':'autocomplete'}}"
+                    data-type="{{f.datamodel}}">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
