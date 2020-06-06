@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const PostService = require("../../services/PostService");
+const JwtService = require("../../services/JwtService");
 
 router.get("/posts", async (req, res) => {
   //   console.log(req.query);
@@ -15,20 +16,20 @@ router.get("/posts/:id", async (req, res) => {
   res.json(response);
 });
 
-router.post("/posts", async (req, res) => {
+router.post("/posts", JwtService.verifyUserToken, async (req, res) => {
   const postData = req.body;
   const response = await PostService.insertPost(postData);
   res.json(response);
 });
 
-router.put("/posts", async (req, res) => {
+router.put("/posts", JwtService.verifyUserToken, async (req, res) => {
   const postData = req.body;
   const response = await PostService.editPost(postData);
   console.log(response);
   res.json(response);
 });
 
-router.delete("/posts/:id", async (req, res) => {
+router.delete("/posts/:id", JwtService.verifyUserToken, async (req, res) => {
   const { id } = req.params;
   const response = await PostService.deletePost(id);
   res.json(response);
