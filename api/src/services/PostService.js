@@ -22,7 +22,7 @@ module.exports = {
     }
   },
   //done
-  getAll: async function (dest, draw, length, start) {
+  getAll: async function (dest, draw, length, start, date) {
     const response = { msg: "FAILURE", data: null };
     try {
       let posts = [];
@@ -40,12 +40,15 @@ module.exports = {
         response.data = formattedPosts;
         return response;
       } else {
-        posts = await post.find({}).sort({ created_at: -1 });
+        posts = await post
+          .find({ created_at: { $lte: date } }, [], { limit: 5 })
+          .sort({ created_at: -1 });
         response.msg = "SUCCESS";
         response.data = posts;
         return response;
       }
     } catch (err) {
+      console.log(err);
       return response;
     }
   },

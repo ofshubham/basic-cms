@@ -3,8 +3,8 @@
 <!-- Main Content -->
 <div class="container">
   <div class="row">
-    <div class="col-lg-8 col-md-10 mx-auto" *ngIf="posts">
-      <div class="post-preview" *ngFor="let post of posts">
+    <div class="col-lg-8 col-md-10 mx-auto" *ngIf="fivePosts">
+      <div class="post-preview" *ngFor="let post of fivePosts">
         <a [routerLink]="'posts/'+post.slug">
           <h2 class="post-title">
             {{post.title}}
@@ -19,10 +19,11 @@
           {{post.created_at | date:'M/d/yyyy HH:mm:ss'}}</p>
       </div>
       <hr>
-      <hr>
       <!-- Pager -->
       <div class="clearfix">
-        <a class="btn btn-primary float-right" href="#">Older Posts &rarr;</a>
+        <a class="btn btn-primary float-right" *ngIf="olderPostButton" href="javascript:void(0);"
+          (click)="viewOlderPosts()">Older Posts
+          &rarr;</a>
       </div>
     </div>
   </div>

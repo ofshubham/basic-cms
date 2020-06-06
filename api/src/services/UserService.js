@@ -44,12 +44,10 @@ module.exports = {
           };
           const privateKey = await fs.readFile("src/keys/private.key", "utf8");
           if (privateKey) {
-            console.log(comparisonResult);
             const token = await jwt.sign(payload, privateKey, signOption);
             if (token) {
               response.msg = "SUCCESS";
               response.data = { token: token, uid: result._id };
-              console.log(response);
               return response;
             } else {
               return response;

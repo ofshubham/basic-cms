@@ -9,11 +9,24 @@ import { GlobalService } from "src/app/services/global.service";
 export class MainComponent implements OnInit {
   posts: [];
   fivePosts = [];
+  olderPostButton = true;
   constructor(private service: GlobalService) {
-    this.service.getAll("posts", (res) => {
-      this.posts = res.data;
-    });
+    this.getFiveOlderPosts(new Date().toISOString());
   }
 
   ngOnInit() {}
+  getFiveOlderPosts(date) {
+    this.fivePosts = [];
+    this.service.getAll("posts?date=" + date, (res) => {
+      this.fivePosts = res.data;
+      if (this.fivePosts.length < 5) {
+        this.olderPostButton = false;
+      }
+    });
+  }
+  viewOlderPosts() {
+    this.getFiveOlderPosts(
+      this.fivePosts[this.fivePosts.length - 1].created_at
+    );
+  }
 }
