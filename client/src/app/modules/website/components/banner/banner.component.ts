@@ -6,9 +6,7 @@ import { Component, OnInit, Input } from "@angular/core";
   styleUrls: ["./banner.component.css"],
 })
 export class BannerComponent implements OnInit {
-  @Input("bannerUrl") bannerUrl: string;
-  @Input("heading") heading: string;
-  @Input("subHeading") subHeading: string;
+
 
   constructor() {}
 

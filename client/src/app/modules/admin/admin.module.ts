@@ -8,11 +8,16 @@ import { RouterModule } from "@angular/router";
 import { ReactiveFormsModule } from "@angular/forms";
 import { AuthModule } from "./auth/auth.module";
 import { DashboardComponent } from "./components/dashboard/dashboard.component";
-import { PostsCreateComponent } from './components/posts/posts-create/posts-create.component';
-import { PostsListComponent } from './components/posts/posts-list/posts-list.component';
+import { PostsCreateComponent } from "./components/posts/posts-create/posts-create.component";
+import { PostsListComponent } from "./components/posts/posts-list/posts-list.component";
 
 @NgModule({
-  declarations: [AdminComponent, DashboardComponent, PostsCreateComponent, PostsListComponent],
+  declarations: [
+    AdminComponent,
+    DashboardComponent,
+    PostsCreateComponent,
+    PostsListComponent,
+  ],
   imports: [
     CommonModule,
     AdminRoutingModule,
