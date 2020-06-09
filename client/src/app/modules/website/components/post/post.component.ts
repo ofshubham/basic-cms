@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { GlobalService } from "src/app/services/global.service";
 
 @Component({
@@ -9,11 +9,19 @@ import { GlobalService } from "src/app/services/global.service";
 })
 export class PostComponent implements OnInit {
   post: {};
-  constructor(private route: ActivatedRoute, private service: GlobalService) {
+  constructor(
+    private route: ActivatedRoute,
+    private service: GlobalService,
+    private router: Router
+  ) {
     this.route.params.subscribe((a) => {
       if (a.slug) {
         this.service.getById("posts", a.slug + "?slug=1", (res) => {
-          this.post = res.data;
+          if (res.data) {
+            this.post = res.data;
+          } else {
+            this.router.navigate(["notfound"]);
+          }
         });
       }
     });
