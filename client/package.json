@@ -23,7 +23,7 @@
     "angular-datatables": "^9.0.2",
     "core-js": "^2.5.4",
     "crypto-js": "^3.1.9-1",
-    "datatables.net": "^1.10.21",
+    "datatables.net": "^1.11.3",
     "datatables.net-dt": "^1.10.21",
     "jquery": "^3.5.1",
     "ng-multiselect-dropdown": "^0.2.5",
